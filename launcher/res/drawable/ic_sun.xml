@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- teekOS icon (original drawing). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp" android:height="24dp" android:viewportWidth="24" android:viewportHeight="24">
+    <path android:fillColor="#FFFFFFFF" android:pathData="M12,12m-3.6,0a3.6,3.6 0 1,0 7.2,0a3.6,3.6 0 1,0 -7.2,0"/>
+    <path android:strokeColor="#FFFFFFFF" android:fillColor="#00000000" android:strokeLineCap="round" android:strokeWidth="1.8" android:pathData="M18.20,12.00L20.60,12.00M16.38,16.38L18.08,18.08M12.00,18.20L12.00,20.60M7.62,16.38L5.92,18.08M5.80,12.00L3.40,12.00M7.62,7.62L5.92,5.92M12.00,5.80L12.00,3.40M16.38,7.62L18.08,5.92"/>
+</vector>

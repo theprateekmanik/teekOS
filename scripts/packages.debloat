@@ -1,0 +1,16 @@
+# teekOS debloat list. Each package is disabled for user 0 (pm disable-user), never uninstalled.
+# OnePlus / HeyTap extras
+com.heytap.tv.msgboard
+com.heytap.tv.camera
+com.heytap.tv.remotediagnosing
+com.oneplus.tv.userguide
+net.oneplus.weather
+com.coloros.relax.tv
+fusion.android.tv.demo
+oneplus.smarthome
+com.heytap.olink
+# Google extras
+com.google.android.videos
+com.google.android.play.games
+# Ambient mode
+com.google.android.apps.tv.dreamx

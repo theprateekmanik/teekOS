@@ -1,0 +1,6 @@
+launcher/build/
+*.apk
+*.idsig
+*.keystore
+*.pass
+.DS_Store

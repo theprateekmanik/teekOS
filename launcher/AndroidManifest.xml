@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="space.teek.tvos"
+    android:versionCode="7"
+    android:versionName="2.9">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Picture sliders (backlight/brightness live in global settings); granted by install.sh (picture flag). -->
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
+    <!-- Recommendations apps publish to the TV provider (watch next + app channels). -->
+    <uses-permission android:name="android.permission.READ_TV_LISTINGS" />
+
+    <uses-feature android:name="android.software.leanback" android:required="true" />
+    <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+        </intent>
+    </queries>
+
+    <application
+        android:label="teekOS"
+        android:icon="@drawable/banner"
+        android:banner="@drawable/banner"
+        android:theme="@style/Teek"
+        android:hardwareAccelerated="true"
+        android:largeHeap="false">
+
+        <activity
+            android:name=".HomeActivity"
+            android:launchMode="singleTask"
+            android:stateNotNeeded="true"
+            android:clearTaskOnLaunch="true"
+            android:excludeFromRecents="true"
+            android:screenOrientation="landscape"
+            android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|uiMode"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".AllAppsActivity"
+            android:screenOrientation="landscape"
+            android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|uiMode"
+            android:exported="false" />
+
+        <activity
+            android:name=".StandbyActivity"
+            android:theme="@style/Teek"
+            android:excludeFromRecents="true"
+            android:screenOrientation="landscape"
+            android:exported="false" />
+
+        <service
+            android:name=".TeekDream"
+            android:label="teekOS Cosmos"
+            android:permission="android.permission.BIND_DREAM_SERVICE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.service.dreams.DreamService" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+
+        <!-- Now Playing only: lets the Control Center read active media sessions. -->
+        <service
+            android:name=".MediaListener"
+            android:process=":hook"
+            android:exported="true"
+            android:label="teekOS Now Playing"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".HomeKeyService"
+            android:process=":hook"
+            android:label="teekOS Home button"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data android:name="android.accessibilityservice" android:resource="@xml/hook" />
+        </service>
+    </application>
+</manifest>

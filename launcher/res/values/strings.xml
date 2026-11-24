@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hook_desc">Makes the remote\'s Home button open teekOS. Turn off to return Home to Google TV. Reads no screen content.</string>
+</resources>

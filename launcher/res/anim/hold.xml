@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Keeps teekOS (showing the expanded tile) on screen while the app's window fades in over it. -->
+<translate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="450" android:fromXDelta="0" android:toXDelta="0" />

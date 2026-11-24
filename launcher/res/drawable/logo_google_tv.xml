@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Google TV mark, from Wikimedia Commons "Google TV logo.svg" (public domain). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp" android:height="17.5dp"
+    android:viewportWidth="571.4" android:viewportHeight="416.9">
+    <path android:fillColor="#4285F4" android:pathData="m497.4 0h-337.9c-29.3 0-53.2 23.9-53.2 53.2v53.2h411.9c29.3 0 53.2 23.9 53.2 53.2v-85.6c0-41.2-33.3-74-74-74z"/>
+    <path android:fillColor="#34A853" android:pathData="m74 0c-40.7 0-74 33.3-74 74v183.4c0 29.3 23.9 53.2 53.2 53.2h53.2v-257.4c0-29.3 23.9-53.2 53.2-53.2z"/>
+    <path android:fillColor="#FBBC04" android:pathData="m74 416.9h337.9c29.3 0 53.2-23.9 53.2-53.2v-53.2h-411.9c-29.3 0.1-53.2-23.8-53.2-53.1v86c0 40.2 32.8 73.5 74 73.5z"/>
+    <path android:fillColor="#EA4335" android:pathData="m497.4 416.9c40.7 0 74-33.3 74-74v-183.4c0-29.3-23.9-53.2-53.2-53.2h-53.2v257.4c0 29.3-23.8 53.2-53.2 53.2z"/>
+</vector>
