@@ -30,7 +30,10 @@ What varies by TV:
    (Google TV won't let other apps be the default home, so teekOS listens for the Home button
    instead. It reads no screen content.)
 
-**Remote:** Home opens teekOS. **Hold Home** for the Control Center. On a tile, **hold OK** for options
+**Remote:** Home opens teekOS. **Hold Home** for the Control Center. The **gauge** button (top right, and in
+the Control Center) cleans up: closes other apps and clears junk, keeping teekOS, the app you're in and
+anything playing. For the full clean, keep **Network debugging** on in Developer options (the TV may ask
+once to allow teekOS); without it the gauge just closes apps running in the background. On a tile, **hold OK** for options
 (Move, Add to Dock, Hide).
 
 ## Optional extras (need ADB from a computer)

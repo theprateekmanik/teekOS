@@ -238,6 +238,7 @@ public class HomeActivity extends Activity {
 
     @Override protected void onResume() {
         super.onResume();
+        Cleanup.healHook(this);   // Android turns the hook off if something kills it
         front = true;
         updateClock();
         Actions.settleHome(this);
@@ -324,6 +325,8 @@ public class HomeActivity extends Activity {
 
         h.addView(new View(this), new LinearLayout.LayoutParams(0, 1, 1f));
 
+        // Cleaner: close other apps and clear junk (gauge icon), beside the mode switch.
+        h.addView(Ui.iconButton(this, R.drawable.ic_speed, "Clean up", v -> Cleanup.button(this)));
         // The Google TV mark in its glass disc switches the Cinematic Dashboard on/off.
         // (Opening Google TV itself lives in the Settings menu.)
         h.addView(Ui.logoButton(this, getDrawable(R.drawable.logo_google_tv), "Cinematic Dashboard",

@@ -22,6 +22,7 @@ public class HomeKeyService extends AccessibilityService {
 
     static final String ACTION_PASSTHROUGH = "space.teek.tvos.PASSTHROUGH";
     static final String ACTION_POWER_OFF = "space.teek.tvos.POWER_OFF";
+    static final String ACTION_CLEANUP = "space.teek.tvos.CLEANUP";
     private static final long LONG_PRESS_MS = 600;
     private static final long PASSTHROUGH_MS = 30 * 60 * 1000;
 
@@ -35,6 +36,7 @@ public class HomeKeyService extends AccessibilityService {
     private final BroadcastReceiver passthrough = new BroadcastReceiver() {
         @Override public void onReceive(Context c, Intent i) {
             if (ControlCenter.ACTION_SHOW.equals(i.getAction())) { showControlCenter(); return; }
+            if (ACTION_CLEANUP.equals(i.getAction())) { Cleanup.button(HomeKeyService.this); return; }
             if (ACTION_POWER_OFF.equals(i.getAction())) {
                 performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN);   // TV: screen off / standby
             } else {
@@ -50,6 +52,7 @@ public class HomeKeyService extends AccessibilityService {
         IntentFilter f = new IntentFilter(ACTION_PASSTHROUGH);
         f.addAction(ACTION_POWER_OFF);
         f.addAction(ControlCenter.ACTION_SHOW);
+        f.addAction(ACTION_CLEANUP);
         registerReceiver(passthrough, f);
     }
 

@@ -168,6 +168,7 @@ final class ControlCenter {
         r3.setClipChildren(false);
         if (Actions.hasPlayStation(c))
             r3.addView(round(c, R.drawable.ic_games, "PlayStation", dp, () -> { close.run(); MAIN.post(() -> Actions.playStation(c)); }));
+        r3.addView(round(c, R.drawable.ic_speed, "Clean Up", dp, () -> { close.run(); MAIN.post(() -> Cleanup.button(c)); }));
         r3.addView(round(c, R.drawable.ic_display, "Picture", dp, () -> { close.run(); picture(c); }));
         r3.addView(round(c, R.drawable.ic_settings, "Settings", dp, () -> { close.run(); open(c, Settings.ACTION_SETTINGS); }));
         LinearLayout.LayoutParams r3l = new LinearLayout.LayoutParams(inner, ViewGroup.LayoutParams.WRAP_CONTENT);
