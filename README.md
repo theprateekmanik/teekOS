@@ -5,8 +5,17 @@ what your apps recommend, a compact Control Center with Now Playing, and a night
 No root, no ads from the stock launcher's "For you" rows, and fully reversible: uninstall it and your
 normal home screen is back.
 
-Built on and for a OnePlus TV (Android TV 11, Google TV). Other Android TV 11+ sets should work but
-are untested.
+Works on **Android TV / Google TV 8.0 and newer** (Sony, TCL, Philips, Xiaomi, OnePlus, Chromecast
+with Google TV, Nvidia Shield…). It finds your TV's own launcher by itself, so the Home button works
+whichever one your TV has. Developed and tested on a OnePlus TV (Google TV, Android 11).
+
+What varies by TV:
+- **Cinematic panel:** shows what your apps publish to Android's TV recommendations. Some TVs
+  restrict this; teekOS then shows each app's own banner instead.
+- **Backlight / brightness sliders:** only on TVs that keep picture settings the way MediaTek-based
+  sets do (OnePlus, many TCL/Xiaomi). Elsewhere the Picture button opens the TV's own picture settings.
+- **PlayStation tile:** appears only when a console announces itself over HDMI-CEC.
+- **Fire TV** isn't supported (Amazon's launcher works differently).
 
 ## Install (no computer needed)
 

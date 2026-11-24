@@ -189,14 +189,8 @@ final class Actions {
     }
 
     static void googleTv(Activity a) {
-        Intent i = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME)
-                .setComponent(new ComponentName("com.google.android.apps.tv.launcherx",
-                        "com.google.android.apps.tv.launcherx.home.HomeActivity"))
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        // Tell the Home hook this visit to Google TV is on purpose.
+        // Tell the Home hook this visit to the TV's own launcher is on purpose.
         a.sendBroadcast(new Intent(HomeKeyService.ACTION_PASSTHROUGH).setPackage(a.getPackageName()));
-        try { a.startActivity(i); } catch (Exception e) {
-            Toast.makeText(a, "Google TV home isn't available", Toast.LENGTH_SHORT).show();
-        }
+        if (!StockHome.open(a)) Toast.makeText(a, "The TV's home screen isn't available", Toast.LENGTH_SHORT).show();
     }
 }

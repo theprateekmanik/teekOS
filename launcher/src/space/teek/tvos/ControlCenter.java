@@ -254,10 +254,7 @@ final class ControlCenter {
     private static void googleTv(Context c) {
         c.sendBroadcast(new Intent(HomeKeyService.ACTION_PASSTHROUGH).setPackage(c.getPackageName()));
         try {
-            c.startActivity(new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME)
-                    .setComponent(new ComponentName("com.google.android.apps.tv.launcherx",
-                            "com.google.android.apps.tv.launcherx.home.HomeActivity"))
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+            StockHome.open(c);
         } catch (Exception ignored) { }
     }
 
@@ -415,7 +412,7 @@ final class ControlCenter {
                 state.setVisibility(View.INVISIBLE);
                 SharedPreferences p = prefs(c);
                 String lt = p.getString("np_title", null), pkg = p.getString("np_pkg", null);
-                if (lt == null || pkg == null) {
+                if (lt == null || pkg == null) {   // nothing remembered yet
                     title.setText("Not Playing");
                     artist.setText("Nothing played yet");
                     placeholder();
@@ -424,9 +421,11 @@ final class ControlCenter {
                 String app = pkg;
                 try { app = String.valueOf(c.getPackageManager().getApplicationLabel(c.getPackageManager().getApplicationInfo(pkg, 0))); }
                 catch (Exception ignored) { }
-                title.setText(lt);
                 String la = p.getString("np_artist", null);
-                artist.setText("Last played  ·  " + (la != null && !la.isEmpty() ? la : app));
+                boolean hasTitle = !lt.trim().isEmpty();
+                title.setText(hasTitle ? lt : app);
+                artist.setText(hasTitle && la != null && !la.trim().isEmpty() && !la.equals(lt)
+                        ? "Last played  ·  " + la : hasTitle ? "Last played  ·  " + app : "Last played");
                 Bitmap b = android.graphics.BitmapFactory.decodeFile(new java.io.File(c.getFilesDir(), MediaListener.ART_FILE).getPath());
                 if (b != null) {
                     art.setImageTintList(null);
@@ -501,8 +500,10 @@ final class ControlCenter {
         }
     }
 
+    /** Sliders only where they'll work: permission granted and this TV keeps picture_* settings (MediaTek). */
     private static boolean canWrite(Context c) {
-        return c.checkSelfPermission("android.permission.WRITE_SECURE_SETTINGS") == android.content.pm.PackageManager.PERMISSION_GRANTED;
+        return c.checkSelfPermission("android.permission.WRITE_SECURE_SETTINGS") == android.content.pm.PackageManager.PERMISSION_GRANTED
+                && Settings.Global.getString(c.getContentResolver(), "picture_backlight") != null;
     }
 
     /** iOS-style glass slider bound to a 0–100 global setting; Left/Right change it by 5. */

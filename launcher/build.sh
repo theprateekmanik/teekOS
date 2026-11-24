@@ -21,9 +21,9 @@ final class Owner {
 JAVA
 $BT/aapt2 compile --dir res -o build/res.zip
 $BT/aapt2 link -I $JAR --manifest AndroidManifest.xml --java build/gen \
-  --min-sdk-version 30 --target-sdk-version 30 -A assets -o build/unsigned.apk build/res.zip
+  --min-sdk-version 26 --target-sdk-version 30 -A assets -o build/unsigned.apk build/res.zip
 javac -nowarn --release 11 -classpath $JAR -d build/obj $(find src build/gen -name '*.java')
-$BT/d8 --release --min-api 30 --lib $JAR --output build/dex $(find build/obj -name '*.class')
+$BT/d8 --release --min-api 26 --lib $JAR --output build/dex $(find build/obj -name '*.class')
 (cd build/dex && zip -q ../unsigned.apk classes.dex)
 $BT/zipalign -f 4 build/unsigned.apk build/aligned.apk
 KS=$HOME/.android/teekos.keystore

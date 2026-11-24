@@ -69,8 +69,8 @@ public class MediaListener extends NotificationListenerService {
         MediaMetadata m = c.getMetadata();
         if (m == null || s == null || s.getState() != PlaybackState.STATE_PLAYING) return;
         String title = m.getString(MediaMetadata.METADATA_KEY_TITLE);
-        if (title == null) title = m.getString(MediaMetadata.METADATA_KEY_DISPLAY_TITLE);
-        if (title == null) return;
+        if (title == null || title.trim().isEmpty()) title = m.getString(MediaMetadata.METADATA_KEY_DISPLAY_TITLE);
+        if (title == null) title = "";   // some apps (YouTube between videos) send none: the row shows the app name
         String artist = m.getString(MediaMetadata.METADATA_KEY_ARTIST);
         if (artist == null) artist = m.getString(MediaMetadata.METADATA_KEY_DISPLAY_SUBTITLE);
         SharedPreferences p = ControlCenter.prefs(this);

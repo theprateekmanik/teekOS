@@ -22,8 +22,6 @@ public class HomeKeyService extends AccessibilityService {
 
     static final String ACTION_PASSTHROUGH = "space.teek.tvos.PASSTHROUGH";
     static final String ACTION_POWER_OFF = "space.teek.tvos.POWER_OFF";
-    private static final String STOCK_PKG = "com.google.android.apps.tv.launcherx";
-    private static final String STOCK_HOME = "com.google.android.apps.tv.launcherx.home.HomeActivity";
     private static final long LONG_PRESS_MS = 600;
     private static final long PASSTHROUGH_MS = 30 * 60 * 1000;
 
@@ -98,12 +96,13 @@ public class HomeKeyService extends AccessibilityService {
 
     @Override public void onAccessibilityEvent(AccessibilityEvent ev) {
         if (ev.getEventType() != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) return;
-        if (!STOCK_PKG.contentEquals(String.valueOf(ev.getPackageName()))) return;
+        android.content.ComponentName stock = StockHome.get(this);   // this TV's own launcher
+        if (stock == null || !stock.getPackageName().contentEquals(String.valueOf(ev.getPackageName()))) return;
         long now = SystemClock.uptimeMillis();
         // The remote's settings button (key 83) is handled by the system and opens Google TV's own
         // panel; it can't be intercepted, so it's left alone. The Control Center is on long-press Home.
         String cls = String.valueOf(ev.getClassName());
-        if (!STOCK_HOME.contentEquals(cls)) return;
+        if (!stock.getClassName().contentEquals(cls)) return;
         if (now < passthroughUntil) return;
 
         // If teekOS keeps failing to stay up, stop bouncing and let Google TV be.
