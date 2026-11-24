@@ -26,7 +26,7 @@ What varies by TV:
 4. Open Downloader and enter the link to `teekOS.apk` from the
    [latest release](../../releases/latest). Download, then **Install**.
 5. Open **teekOS** from your apps.
-6. Make the Home button open teekOS: Settings → Accessibility → **teekOS Home button** → On.
+6. Make the Home button open teekOS: Settings → System → Accessibility → **teekOS Home button** → On.
    (Google TV won't let other apps be the default home, so teekOS listens for the Home button
    instead. It reads no screen content.)
 
