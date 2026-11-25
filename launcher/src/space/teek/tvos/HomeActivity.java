@@ -224,6 +224,8 @@ public class HomeActivity extends Activity {
 
         rebuild();
         intro();
+        if (UserName.shouldAsk(this) || getIntent().getBooleanExtra("ask_name", false))
+            getWindow().getDecorView().postDelayed(this::askName, 900);
     }
 
     @Override protected void onDestroy() {
@@ -261,7 +263,7 @@ public class HomeActivity extends Activity {
 
     /** A new greeting each time you come back: quick fade out, swap, fade in. */
     private void shuffleGreeting() {
-        String next = Greetings.pick(String.valueOf(greeting.getText()));
+        String next = Greetings.pick(this, String.valueOf(greeting.getText()));
         greeting.animate().cancel();
         greeting.animate().alpha(0f).setDuration(160).setInterpolator(Motion.EASE).withEndAction(() -> {
             greeting.setText(next);
@@ -274,9 +276,14 @@ public class HomeActivity extends Activity {
         if (level >= TRIM_MEMORY_UI_HIDDEN) { backdrop.trim(); Recs.trimMemory(); }
     }
 
+    private void askName() {
+        UserName.ask(this, () -> greeting.setText(Greetings.pick(this, null)));
+    }
+
     /** Home pressed (from an app or while home): back to the first app at the top. */
     @Override protected void onNewIntent(Intent i) {
         super.onNewIntent(i);
+        if (i.getBooleanExtra("ask_name", false)) getWindow().getDecorView().postDelayed(this::askName, 300);
         // Home always lands at the top (greeting visible); Back from an app keeps your place.
         if (movingKey != null) {
             for (TileView t : tiles) if (t.isMoving()) t.stopMoving();
@@ -360,7 +367,7 @@ public class HomeActivity extends Activity {
 
         TextView title = new TextView(this);
         greeting = title;
-        title.setText(Greetings.pick(null));
+        title.setText(Greetings.pick(this, null));
         title.setSingleLine(true);
         title.setAutoSizeTextTypeUniformWithConfiguration(26, 42, 1, android.util.TypedValue.COMPLEX_UNIT_SP);
         title.setTextColor(Color.WHITE);
@@ -652,7 +659,7 @@ public class HomeActivity extends Activity {
         // No greeting in cinematic mode: the panel takes the space. (Kept detached so the
         // shuffle logic stays shared with Minimal mode.)
         greeting = new TextView(this);
-        greeting.setText(Greetings.pick(null));
+        greeting.setText(Greetings.pick(this, null));
 
         panel = new FrameLayout(this);
         float radius = 28 * dp;   // same corner as the Dock

@@ -4,7 +4,7 @@ import java.util.Calendar;
 import java.util.Random;
 
 /** Twelve short greetings, three per part of the day; a fresh one each time you come home.
- *  {N} becomes ", <name>" (Owner.NAME), or nothing in the share build. */
+ *  {N} becomes ", <name>" (UserName), or nothing when no name is set. */
 final class Greetings {
     private Greetings() { }
 
@@ -32,12 +32,12 @@ final class Greetings {
     private static final Random RND = new Random();
 
     /** A greeting for the current hour, never the same as {@code last}. */
-    static String pick(String last) {
+    static String pick(android.content.Context c, String last) {
         int h = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
         String[] set = h >= 5 && h < 12 ? MORNING : h < 17 && h >= 12 ? AFTERNOON
                 : h >= 17 && h < 22 ? EVENING : NIGHT;
         String g;
-        String name = Owner.NAME.isEmpty() ? "" : ", " + Owner.NAME;
+        String n = UserName.get(c), name = n.isEmpty() ? "" : ", " + n;
         do { g = set[RND.nextInt(set.length)].replace("{N}", name); } while (g.equals(last) && set.length > 1);
         return g;
     }

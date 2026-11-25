@@ -98,7 +98,14 @@ final class ControlCenter {
         if (online) sw.setImageTintList(ColorStateList.valueOf(0xFF0A84FF));
         status.addView(sw, margin((int) (10 * dp)));
         TextView av = avatar(c, dp, 24);
-        if (Owner.NAME.isEmpty()) av.setVisibility(View.GONE);
+        // The avatar is the way to (re)set your name: opens Home with the name prompt.
+        av.setFocusable(true);
+        av.setOnFocusChangeListener((x, f) -> x.animate().scaleX(f ? 1.25f : 1f).scaleY(f ? 1.25f : 1f).setDuration(Motion.FOCUS_MS).start());
+        av.setOnClickListener(x -> {
+            close.run();
+            c.startActivity(new Intent(c, HomeActivity.class).putExtra("ask_name", true)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP));
+        });
         ((LinearLayout.LayoutParams) av.getLayoutParams()).leftMargin = (int) (8 * dp);
         status.addView(av);
         col.addView(status, wrap());
@@ -161,16 +168,13 @@ final class ControlCenter {
             panel.addView(slider(c, dp, inner, R.drawable.ic_sun, "picture_brightness"), yl);
         }
 
-        // Round shortcuts.
+        // One button: switch to Google TV.
+        int bh = (int) (44 * dp);
         LinearLayout r3 = new LinearLayout(c);
-        r3.setOrientation(LinearLayout.HORIZONTAL);
-        r3.setGravity(Gravity.CENTER);
+        r3.setOrientation(LinearLayout.VERTICAL);
         r3.setClipChildren(false);
-        if (Actions.hasPlayStation(c))
-            r3.addView(round(c, R.drawable.ic_games, "PlayStation", dp, () -> { close.run(); MAIN.post(() -> Actions.playStation(c)); }));
-        r3.addView(round(c, R.drawable.ic_speed, "Clean Up", dp, () -> { close.run(); MAIN.post(() -> Cleanup.button(c)); }));
-        r3.addView(round(c, R.drawable.ic_display, "Picture", dp, () -> { close.run(); picture(c); }));
-        r3.addView(round(c, R.drawable.ic_settings, "Settings", dp, () -> { close.run(); open(c, Settings.ACTION_SETTINGS); }));
+        r3.addView(textBtn(c, dp, R.drawable.logo_google_g, "Switch to Google TV", () -> { close.run(); googleTv(c); }),
+                new LinearLayout.LayoutParams(inner, bh));
         LinearLayout.LayoutParams r3l = new LinearLayout.LayoutParams(inner, ViewGroup.LayoutParams.WRAP_CONTENT);
         r3l.topMargin = (int) (6 * dp);
         panel.addView(r3, r3l);
@@ -643,11 +647,32 @@ final class ControlCenter {
         });
     }
 
+    /** Glass text button (optional full-colour logo before the label); white when focused. */
+    private static View textBtn(Context c, float dp, int logo, String label, Runnable act) {
+        LinearLayout b = new LinearLayout(c);
+        b.setOrientation(LinearLayout.HORIZONTAL);
+        b.setGravity(Gravity.CENTER);
+        Drawable idle = glass(16 * dp, dp, 0x14FFFFFF);
+        b.setBackground(idle);
+        if (logo != 0) {
+            ImageView g = new ImageView(c);
+            g.setImageResource(logo);
+            LinearLayout.LayoutParams gl = new LinearLayout.LayoutParams((int) (18 * dp), (int) (18 * dp));
+            gl.rightMargin = (int) (9 * dp);
+            b.addView(g, gl);
+        }
+        TextView t = text(c, label, 13, Type.semibold, Color.WHITE);
+        t.setSingleLine(true);
+        b.addView(t);
+        focusable(b, idle, dp, new TextView[]{t}, null, act);
+        return b;
+    }
+
     private static View round(Context c, int icon, String label, float dp, Runnable act) {
         View b = Ui.iconButton(c, icon, label, v -> act.run());
-        int s = (int) (42 * dp);
+        int s = (int) (40 * dp);
         LinearLayout.LayoutParams bl = new LinearLayout.LayoutParams(s, s);
-        bl.leftMargin = bl.rightMargin = (int) (12 * dp);
+        bl.leftMargin = bl.rightMargin = (int) (6 * dp);
         bl.topMargin = bl.bottomMargin = (int) (4 * dp);
         b.setLayoutParams(bl);
         int ip = (int) (11 * dp);
@@ -664,7 +689,8 @@ final class ControlCenter {
     }
 
     private static TextView avatar(Context c, float dp, int sizeDp) {
-        TextView t = text(c, Owner.NAME.isEmpty() ? "" : Owner.NAME.substring(0, 1).toUpperCase(Locale.ROOT), 11, Type.bold, Color.WHITE);
+        String nm = UserName.get(c);
+        TextView t = text(c, nm.isEmpty() ? "+" : nm.substring(0, 1).toUpperCase(Locale.ROOT), 11, Type.bold, Color.WHITE);
         t.setGravity(Gravity.CENTER);
         GradientDrawable av = new GradientDrawable(GradientDrawable.Orientation.TL_BR, new int[]{0xFF7B61FF, 0xFFFF5E8A});
         av.setShape(GradientDrawable.OVAL);
